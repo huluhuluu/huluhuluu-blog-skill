@@ -30,6 +30,8 @@ Read [references/style-profile.md](references/style-profile.md) first if the req
 - Add one or two lines of explanation around commands when the intent is not obvious.
 - Mention platform and environment details when they matter: Windows, Ubuntu, Android, device model, SoC, toolchain, shell, package manager, or runtime.
 - Surface caveats explicitly when there are path differences, API quirks, permissions, or version-sensitive behavior.
+- Use meaningful image filenames that describe the content, such as `tmux-session-layout.png` or `codex-skill-install-flow.png`. Avoid generic names like `image1.png`, `截图.png`, or timestamp-only names.
+- Keep image captions short and functional. Explain only what the reader needs to recognize the screenshot or diagram.
 - Do not pad the article with motivational talk, marketing language, or generic claims.
 
 ## Format conventions

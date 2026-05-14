@@ -24,7 +24,7 @@
 ## 2. 目录结构
 
 ```text
-huluhuluu-blog-style/
+huluhuluu-blog-skill/
 ├── README.md
 ├── SKILL.md
 ├── agents/
@@ -57,14 +57,14 @@ cd huluhuluu-blog-skill
 
 #### 3.1.2 Windows PowerShell
 
-把 `huluhuluu-blog-style/` 放到 `Codex` 的 skills 目录：
+把当前仓库根目录复制到 `Codex` 的 skills 目录，并命名为 `huluhuluu-blog-style`：
 
 ```powershell
 # create codex skill dir
 New-Item -ItemType Directory -Force -Path "$HOME\\.codex\\skills" | Out-Null
 
-# copy skill into codex skills
-Copy-Item -Recurse -Force ".\\huluhuluu-blog-style" "$HOME\\.codex\\skills\\huluhuluu-blog-style"
+# copy repo root into codex skills
+Copy-Item -Recurse -Force "." "$HOME\\.codex\\skills\\huluhuluu-blog-style"
 ```
 
 #### 3.1.3 Linux / macOS
@@ -73,8 +73,8 @@ Copy-Item -Recurse -Force ".\\huluhuluu-blog-style" "$HOME\\.codex\\skills\\hulu
 # create codex skill dir
 mkdir -p ~/.codex/skills
 
-# copy skill into codex skills
-cp -r ./huluhuluu-blog-style ~/.codex/skills/
+# copy repo root into codex skills
+cp -r . ~/.codex/skills/huluhuluu-blog-style
 ```
 
 使用软链接可以让 skill 后续和仓库内容保持同步，做法如下：
@@ -83,8 +83,8 @@ cp -r ./huluhuluu-blog-style ~/.codex/skills/
 # create codex skill dir
 mkdir -p ~/.codex/skills
 
-# replace copied directory with symlink
-ln -sfn "$(pwd)/huluhuluu-blog-style" ~/.codex/skills/huluhuluu-blog-style
+# link repo root as the skill directory
+ln -sfn "$(pwd)" ~/.codex/skills/huluhuluu-blog-style
 ```
 
 #### 3.1.4 验证
@@ -107,6 +107,20 @@ codex exec 'Use $huluhuluu-blog-style to draft a new post about tmux.'
 ```
 
 这里使用单引号，避免 PowerShell 把 `$huluhuluu-blog-style` 当成变量展开。
+
+### 3.1.5 通过 AI Agent 安装配置（推荐）
+
+最简单的方式是把下面这段话直接发给 `Claude Code`、`Codex` 或其他 AI 编码 Agent，让它帮你完成 `cc-connect` 安装、平台接入和本 skill 的本地挂载。
+
+```text
+请参考 https://raw.githubusercontent.com/chenhg5/cc-connect/refs/heads/main/INSTALL.md 帮我安装和配置 cc-connect，并把当前仓库安装成 Codex skill `huluhuluu-blog-style`。仓库根目录本身就是 skill 目录，不要假设仓库里还有一层 `huluhuluu-blog-style/` 子目录。安装完成后，继续参考 https://github.com/chenhg5/cc-connect/blob/main/README.zh-CN.md#-平台接入指南 ，按我的平台选择完成接入。
+```
+
+如果你已经装好了 `cc-connect`，也可以只让 AI Agent 处理 skill 安装：
+
+```text
+请把当前仓库安装成 Codex skill `huluhuluu-blog-style`。仓库根目录本身就是 skill 目录，请创建或修正 `~/.codex/skills/huluhuluu-blog-style` 到当前仓库根目录的软链接，并验证 `codex` 可以使用这个 skill。
+```
 
 ### 3.2 cc-switch 导入
 
