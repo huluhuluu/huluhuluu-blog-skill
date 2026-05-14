@@ -64,7 +64,7 @@ cd huluhuluu-blog-skill
 New-Item -ItemType Directory -Force -Path "$HOME\\.codex\\skills" | Out-Null
 
 # copy skill into codex skills
-Copy-Item -Recurse -Force ".\\huluhuluu-blog-skill\\huluhuluu-blog-style" "$HOME\\.codex\\skills\\huluhuluu-blog-style"
+Copy-Item -Recurse -Force ".\\huluhuluu-blog-style" "$HOME\\.codex\\skills\\huluhuluu-blog-style"
 ```
 
 #### 3.1.3 Linux / macOS
@@ -74,7 +74,7 @@ Copy-Item -Recurse -Force ".\\huluhuluu-blog-skill\\huluhuluu-blog-style" "$HOME
 mkdir -p ~/.codex/skills
 
 # copy skill into codex skills
-cp -r ./huluhuluu-blog-skill/huluhuluu-blog-style ~/.codex/skills/
+cp -r ./huluhuluu-blog-style ~/.codex/skills/
 ```
 
 使用软链接可以让 skill 后续和仓库内容保持同步，做法如下：
@@ -89,11 +89,24 @@ ln -sfn "$(pwd)/huluhuluu-blog-style" ~/.codex/skills/huluhuluu-blog-style
 
 #### 3.1.4 验证
 
+`/skills` 不是 PowerShell 命令，不能在 `codex` 外部直接执行。
+
+直接用显式调用验证：
+
+1. 启动 `codex`
+2. 在 `codex` 交互界面里输入：
+
 ```text
-Use $huluhuluu-blog-style to draft a new post about ...
+Use $huluhuluu-blog-style to draft a new post about tmux.
 ```
 
-也可以通过 `/skills` 查看是否已经发现 `huluhuluu-blog-style`。
+也可以在 PowerShell 里直接执行：
+
+```powershell
+codex exec 'Use $huluhuluu-blog-style to draft a new post about tmux.'
+```
+
+这里使用单引号，避免 PowerShell 把 `$huluhuluu-blog-style` 当成变量展开。
 
 ### 3.2 cc-switch 导入
 
