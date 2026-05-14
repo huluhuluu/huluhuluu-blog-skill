@@ -1,110 +1,158 @@
 # Huluhuluu Blog Style
 
-这个目录是一个面向 Codex 的本地 skill，用来约束 AI 生成更接近当前博客既有风格的文章。
+一个面向 `Codex` 的本地写作 skill，用来约束 AI 生成更接近 **huluhuluu 个人博客**既有风格的文章。
 
-核心文件：
+这套 skill 是从当前博客中已经发布的非 `draft` 文章里抽出来的一套稳定写法，目标是让新文章在语气、结构、细节粒度和格式上自然融入现有仓库。
 
-- `SKILL.md`：技能主体，定义适用场景、写作规则、结构模板和示例
-- `references/style-profile.md`：从当前非 draft 博客中提炼出的稳定风格画像
-- `agents/openai.yaml`：给支持 skill UI 的工具提供展示名称和默认提示
+## 1. 风格特点
 
-它的目标是让 AI 生成更接近当前博客已有文章风格的内容，尤其适用于：
+这套 skill 重点保留的是当前博客里已经比较稳定的写作习惯：
 
-- 工具配置 / 命令备忘
-- 环境搭建 / 工程记录
-- 系列首页
-- 论文阅读笔记
-- 源码解析
+- 中文为主，保留必要英文术语
+- 风格偏工程记录，不写空泛铺垫
+- 强调“真实问题 -> 可执行方案 -> 够用解释”
+- 大量使用表格、命令块、步骤拆分
+- 常用 `## 1.`、`### 1.1` 这类层级
+- 命令、路径、类名、配置项统一用行内代码或代码块表示
+- 遇到未完成内容会明确标记 `TODO` / `WIP`
 
-## 安装到 Codex
+更完整的风格归纳见：
 
-Codex 会自动从本地 skills 目录发现 skill。最直接的做法是把这个 skill 复制到 `~/.codex/skills`。
+- [SKILL.md](./SKILL.md)
+- [references/style-profile.md](./references/style-profile.md)
 
-### Windows PowerShell
+## 2. 目录结构
 
-```powershell
-$dst = "$HOME\\.codex\\skills\\huluhuluu-blog-style"
-New-Item -ItemType Directory -Force -Path "$HOME\\.codex\\skills" | Out-Null
-Copy-Item -Recurse -Force ".\\huluhuluu-blog-style" $dst
+```text
+huluhuluu-blog-style/
+├── README.md
+├── SKILL.md
+├── agents/
+│   └── openai.yaml
+└── references/
+    └── style-profile.md
 ```
 
-### Linux / macOS
+其中：
+
+- `SKILL.md`：技能主体，定义适用任务、写作规则、结构模板和示例
+- `references/style-profile.md`：从当前非 `draft` 博客中提炼的稳定风格画像
+- `agents/openai.yaml`：提供 skill 的展示名称、简介和默认提示
+
+## 3. 安装配置
+
+### 3.1 Codex 安装
+
+#### 3.1.1 克隆仓库
+
+先把仓库克隆到本地工作目录：
 
 ```bash
-mkdir -p ~/.codex/skills
-cp -r ./huluhuluu-blog-style ~/.codex/skills/
+# clone repo
+git clone https://github.com/huluhuluu/huluhuluu-blog-skill.git
+
+# enter repo
+cd huluhuluu-blog-skill
 ```
 
-如果你希望 skill 内容始终跟当前仓库同步，也可以用符号链接代替复制。
+#### 3.1.2 Windows PowerShell
 
-### 在 Codex 中使用
+把 `huluhuluu-blog-style/` 放到 `Codex` 的 skills 目录：
 
-启动 `codex` 后，可以直接显式调用：
+```powershell
+# create codex skill dir
+New-Item -ItemType Directory -Force -Path "$HOME\\.codex\\skills" | Out-Null
+
+# copy skill into codex skills
+Copy-Item -Recurse -Force ".\\huluhuluu-blog-skill\\huluhuluu-blog-style" "$HOME\\.codex\\skills\\huluhuluu-blog-style"
+```
+
+#### 3.1.3 Linux / macOS
+
+```bash
+# create codex skill dir
+mkdir -p ~/.codex/skills
+
+# copy skill into codex skills
+cp -r ./huluhuluu-blog-skill/huluhuluu-blog-style ~/.codex/skills/
+```
+
+使用软链接可以让 skill 后续和仓库内容保持同步，做法如下：
+
+```bash
+# create codex skill dir
+mkdir -p ~/.codex/skills
+
+# replace copied directory with symlink
+ln -sfn "$(pwd)/huluhuluu-blog-style" ~/.codex/skills/huluhuluu-blog-style
+```
+
+#### 3.1.4 验证
 
 ```text
 Use $huluhuluu-blog-style to draft a new post about ...
 ```
 
-如果界面支持 `/skills`，也可以在那里查看是否已经被发现。
+也可以通过 `/skills` 查看是否已经发现 `huluhuluu-blog-style`。
 
-## 导入到 cc-switch 并应用到 Codex
+### 3.2 cc-switch 导入
 
-如果你已经用 `cc-switch` 管理 Codex skill，可以按下面步骤导入。
+`cc-switch` 导入基于 3.1 已经完成的本地仓库和 `Codex` skills 目录。先克隆仓库，再安装到 `~/.codex/skills`，再执行下面命令。
 
-### 1. 先把 skill 放到 Codex 可扫描的位置
-
-推荐先完成上一节，把 skill 放到 `~/.codex/skills`。
-
-### 2. 扫描未管理 skill
+#### 3.2.1 扫描未管理 skill
 
 ```bash
+# scan unmanaged skills from codex
 cc-switch skills scan-unmanaged --app codex
 ```
 
-如果扫描正常，应该能看到类似 `huluhuluu-blog-style` 的条目。
+扫描结果里会出现 `huluhuluu-blog-style`。
 
-### 3. 导入到 cc-switch
+#### 3.2.2 导入到 cc-switch
 
 ```bash
+# import skill into cc-switch ssot
 cc-switch skills import-from-apps huluhuluu-blog-style
 ```
 
-### 4. 为 Codex 启用
+#### 3.2.3 为 Codex 启用
 
 ```bash
+# enable skill for codex
 cc-switch skills enable huluhuluu-blog-style --app codex
 ```
 
-### 5. 查看状态
+#### 3.2.4 查看状态
 
 ```bash
+# verify skill status
 cc-switch skills list
 ```
 
-如果启用成功，`Codex` 一列应该会显示启用状态。
+启用完成后，`Codex` 一列会显示启用状态。
 
-## 推荐用法
+## 4. 推荐用法
 
-### 新文章
+### 4.1 新文章
 
 ```text
 Use $huluhuluu-blog-style to write a tools note about xxx.
 ```
 
-### 重写草稿
+### 4.2 重写草稿
 
 ```text
 Use $huluhuluu-blog-style to rewrite this draft so it matches the existing blog tone and structure.
 ```
 
-### 系列首页
+### 4.3 系列首页
 
 ```text
 Use $huluhuluu-blog-style to create an index page for this tutorial series with overview tables and TODO status.
 ```
 
-## 注意
+## 5. 注意
 
 - 这个 skill 只约束写作风格，不替代事实核查。
 - 如果文章涉及最新工具版本、产品行为、论文结论或命令兼容性，仍然需要单独核实。
-- 这个 skill 更偏“工程记录风格”，不是通用营销文案或平台教程风格。
+- 这套风格更偏“工程记录 + 技术笔记”，不适合直接拿去写营销稿或平台教程文案。

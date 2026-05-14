@@ -19,10 +19,14 @@ Read [references/style-profile.md](references/style-profile.md) first if the req
 ## Default writing rules
 
 - Start from the concrete problem or task, not abstract industry background.
+- State the result directly. Do not circle around it with contrastive phrases like "it is not X, but Y" when `Y` can be said directly.
+- Prefer direct openings such as "这是..."、"本文记录..."、"这里整理..."、"这一篇主要讲..." over defensive framing.
+- Use a definite tone. Prefer "这是..."、"会..."、"直接..."、"做法如下..." over tentative phrasing like "如果..."、"希望..."、"可以考虑..." unless the choice is truly conditional.
 - Prefer short paragraphs plus clear section headings.
 - Use `## 1.` and `### 1.1` style headings when the content is procedural or layered.
 - Write commands, paths, env vars, config keys, class names, function names, model names, and file names in inline code.
 - Use fenced code blocks for commands or config snippets that the reader may copy directly.
+- Merge closely related shell steps into one code block when they belong to the same workflow, and mark each step with short comments inside the block.
 - Add one or two lines of explanation around commands when the intent is not obvious.
 - Mention platform and environment details when they matter: Windows, Ubuntu, Android, device model, SoC, toolchain, shell, package manager, or runtime.
 - Surface caveats explicitly when there are path differences, API quirks, permissions, or version-sensitive behavior.
@@ -55,6 +59,7 @@ Use `build.list: never` for series index pages when they are intended as landing
 ### Heading style
 
 - Procedural content: `## 1. xxx` -> `### 1.1 xxx`
+- Keep numbering complete and consistent. Do not mix numbered top-level sections with unnumbered sibling headings.
 - Series index pages: overview first, then section-by-section tables
 - Notes or cheat sheets: group by topic, commands, or workflow stage
 
@@ -79,6 +84,7 @@ Status labels should stay simple and recognizable:
 
 - Put runnable commands in fenced blocks with the right language tag: `bash`, `powershell`, `pwsh`, `toml`, `yaml`.
 - Keep placeholder values obvious, such as `<ip>` or `Qwen/Qwen3-8B`.
+- Prefer one compact block with inline comments over many tiny command blocks when the commands belong to one installation or setup flow.
 - If a command is dangerous or environment-specific, explain it right above or below the block.
 
 ## Structure templates
@@ -149,6 +155,8 @@ Use this pattern for framework internals or model code reading:
 ## Don't
 
 - Do not write as a generic content platform tutorial.
+- Do not use绕弯式开头，例如先解释“不是什么”，再解释“是什么”。
+- Do not lean on uncertain phrasing like “如果你希望…可以…”. State the recommended action directly, then add the concrete steps.
 - Do not add persuasive filler, slogans, or “best practice” platitudes without evidence.
 - Do not replace technical nouns with over-simplified wording when the precise term matters.
 - Do not produce huge theory-first introductions before the practical path starts.
@@ -178,7 +186,10 @@ Use this pattern for framework internals or model code reading:
 ## 1. 安装
 
 ~~~bash
+# install tmux
 sudo apt install -y tmux
+
+# verify installation
 tmux -V
 ~~~
 
