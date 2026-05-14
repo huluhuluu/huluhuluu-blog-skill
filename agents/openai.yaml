@@ -1,0 +1,4 @@
+interface:
+  display_name: "Huluhuluu Blog Style"
+  short_description: "Write technical blog posts in huluhuluu's style"
+  default_prompt: "Use $huluhuluu-blog-style to draft a blog post that matches huluhuluu's writing style."
